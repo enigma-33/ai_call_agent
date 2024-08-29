@@ -6,6 +6,7 @@ import pandas as pd
 #import numpy as np
 import requests
 
+from datetime import datetime
 from includes.AppConfig import AppConfig
 from includes.CallAgent import CallAgent
 from includes.ComplexJSONEncoder import JSONToClass   
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     batch_details.add_argument('--id', required=True, action='store', dest="id", help='Call ID')
     update_batch_results  = subparsers.add_parser('update_batch_results', help='Get the batch details for the specified batch id')
     update_batch_results.add_argument('--id', required=True, action='store', dest="id", help='Call ID')
-    update_batch_results.add_argument("--call_file", required=True ,default=None, help="Call List File.  csv | json")
+    update_batch_results.add_argument("--call_file", required=True ,default=None, help="Call List File.  csv | json") 
 
     args = command_parser.parse_args()
     config = vars(args)
@@ -55,6 +56,10 @@ app_config_json = my_obj.load()
 # Json to Class
 my_class = JSONToClass(app_config_json)
 app_config = my_class.convert()
+
+# Get start time
+start_datetime = datetime.now()
+start_datetime_str = start_datetime.strftime('%Y%m%d_%H%M%S')
 
 if __debug__:
     print()
@@ -211,7 +216,6 @@ elif args.command == "send_call_batch_v2":
     print(call_info)
     exit(1)
 elif args.command == "update_batch_results":
-    ## TODO: Status complete loop
     ## TODO: Add Excel as accepted format and modify DataFile.py load()
     ## TODO: Update original call file with the 
     print()
@@ -219,28 +223,50 @@ elif args.command == "update_batch_results":
     batch_info = call_agent.batch_details(args.id)
     json_data = json.loads(batch_info)
 
+    #print(json_data)
+
     if json_data["status"] == "completed":
         print("...Batch has completed.")
         
-        df = pd.read_csv(args.call_file)
+        base_path = os.path.dirname(args.call_file)
+        file_name = os.path.basename(args.call_file)
+        name, extension = os.path.splitext(file_name)
+        seperator = "_"
+        result_call_file = os.path.join(base_path, seperator.join([start_datetime_str,name,"results"]) + extension)
+        print("...Results will be written to ",result_call_file)
+
+        #df = pd.read_csv(args.call_file)
         call_data = json_data["call_data"]
+        #print(type(call_data))
+        #print(call_data)
+
+        df_results = pd.DataFrame()
         for dict in call_data:
-            #print("...to: {0}, answered by: {1}, completed: {2}".format(dict["to"], dict["answered_by"], dict["completed"]))
-            #for key, value in dict.items():
-            #    print(key, ":", value)
-            #print("")
-            
-            # for boolean indexing
-            df_new = df.query('phone_number==' + dict["to"])
-            index = df_new.index.values[0]
-            df.at[df_new.index.values[0],"completed"] = dict["completed"]
-            df.at[df_new.index.values[0],"answered_by"] = dict["answered_by"]
 
-            #print(type(df_new.index.values[0]))
-            #print(df.at[df_new.index.values[0],"last_name"])
+            #print(dict["to"])
+            #print(dict["variables"]["last_name"])
 
-        print(df)
-        df.to_csv(args.call_file + "x", index=False)
+            result_dict = {}
+            result_dict["call_placed_at"] = dict["created_at"]
+            result_dict["last_name"] = dict["variables"]["last_name"]
+            result_dict["first_name"] = dict["variables"]["first_name"]
+            result_dict["to"] = dict["to"]
+            result_dict["from"] = dict["from"]
+            result_dict["original_appt_time"] = dict["variables"]["appt_time"]
+            result_dict["status"] = dict["status"]
+            result_dict["answered_by"] = dict["answered_by"]
+            result_dict["transferred_to"] = dict["transferred_to"]
+
+            #new_df = pd.DataFrame(result_dict)
+            #df_results = pd.concat(df_results, new_df)
+            #df_results = df_results.append(result_dict, ignore_index=True)
+            df_results = pd.concat([df_results, pd.DataFrame([result_dict])], ignore_index=True)
+            #df_results.iloc[-1] = result_dict
+            #print(result_dict)
+
+        print("Updated status")
+        print(df_results)
+        df_results.to_csv(result_call_file, index=False)
 
         #print("type 2", type(json_data))
         #print(json_data)

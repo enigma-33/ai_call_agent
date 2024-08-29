@@ -20,8 +20,8 @@
         "You: (if the person cannot make it) Ok let me transfer you to our scheduling department. Please hold on for a moment while I transfer you. (transfer call)?",
         "You: (if the person can make it) Perfect, thank you. We will see you tomorrow at {{appt_time}}.",
         "Person: Ok, thank you!",
-        "You: Of course, have a great day! Goodbye.",
-        "Person: Goodbye"
+        "You: Of course, have a great day!", 
+        "Goodbye."
     ],
     "call_data": [
         {}
@@ -39,11 +39,11 @@
     "retry": {
         "wait": 60,
         "voicemail_action": "leave_message",
-        "voicemail_message": "Hello, this is Solace Behavioral Health confirming your appointment tomorrow at {{appt_time}}."
+        "voicemail_message": "Hello, this is Solace Behavioral Health confirming your appointment tomorrow at {{appt_time}}.  Please return our call at 352-678-5550."
     },
     "interruption_threshold": 50,
     "block_interruptions": false,
-    "voicemail_message": "Hello, this is Solace Behavioral Health confirming your appointment tomorrow at {{appt_time}}.",
+    "voicemail_message": "Hello, this is Solace Behavioral Health confirming your appointment tomorrow at {{appt_time}}. Please return our call at 352-678-5550.",
     "voicemail_action": "leave_message",
     "temperature": "0.6",
     "start_time": null,
@@ -56,5 +56,12 @@
     "record": false,
     "max_duration": 5,
     "model": "enhanced",
-    "test_mode": false
+    "test_mode": false,
+    "analysis_schema": {
+        "first_name": "string",
+        "last_name": "string",
+        "rescheduled": "boolean",
+        "appointment_time": "YYYY-MM-DD HH:MM:SS",
+        "disposition_tag": "string"
+    }
 }

@@ -1,0 +1,5 @@
+call_placed_at,last_name,first_name,to,from,original_appt_time,status,answered_by,transferred_to
+2024-08-26T23:19:27.059846+00:00,Leisman,Ed,17244130489,+16573322673,1:00 PM,completed,voicemail,
+2024-08-26T23:19:05.321764+00:00,van Wyk,Johan,14126136278,+19295773591,10:00 AM,completed,human,
+2024-08-26T23:17:08.80634+00:00,van Wyk,Johan,14126136278,+15707616355,10:00 AM,completed,voicemail,
+2024-08-26T23:17:08.80634+00:00,Leisman,Ed,17244130489,+16232924097,1:00 PM,completed,voicemail,
