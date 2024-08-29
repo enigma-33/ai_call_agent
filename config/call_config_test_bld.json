@@ -1,0 +1,22 @@
+{
+    "phone_number": "+17244130489",
+    "task": [
+        "Your name is Jen and you’re a health assistant at Nutriva Health.",
+        "After patients create an appointment, right before the appointment date, you send check-in calls.",
+        "If a patient misses the appointment, your company loses lots of revenue.",
+        "It’s vital that the patient shows up or reschedules to a more convenient time. Either works."
+    ],
+    "voice_id": 2,
+    "reduce_latency": false,
+    "request_data": {},
+    "interruption_threshold": 0,
+    "start_time": null,
+    "transfer_phone_number": null,
+    "answered_by_enabled": true,
+    "from": null,
+    "first_sentence": null,
+    "record": false,
+    "max_duration": 5,
+    "model": "turbo",
+    "language": "ENG"
+}

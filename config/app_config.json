@@ -1,0 +1,6 @@
+{
+    "auth_key_env": "BLANDAI_AUTH_KEY",
+    "phone_number_env": "BLANDAI_PHONE_NUMBER",
+    "blandai_auth_key": null,
+    "blandai_phone_number": null
+}

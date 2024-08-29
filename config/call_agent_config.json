@@ -1,0 +1,11 @@
+{
+    "endpoints": {
+        "calls": "https://api.bland.ai/v1/calls",
+        "batches": "https://api.bland.ai/v2/batches",
+        "call_details": "https://api.bland.ai/v1/calls/{call_id}",
+        "batch_details": "https://api.bland.ai/v1/batches/{batch_id}",
+        "stop_call": "https://api.bland.ai/v1/calls/{call_id}/stop",
+        "stop_batch": "https://api.bland.ai/v1/batches/{batch_id}/stop"
+    },
+    "test_mode": "true"
+}
