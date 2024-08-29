@@ -227,25 +227,21 @@ elif args.command == "update_batch_results":
 
     if json_data["status"] == "completed":
         print("...Batch has completed.")
-        
+
+        # Prepare output file info        
         base_path = os.path.dirname(args.call_file)
         file_name = os.path.basename(args.call_file)
         name, extension = os.path.splitext(file_name)
         seperator = "_"
         result_call_file = os.path.join(base_path, seperator.join([start_datetime_str,name,"results"]) + extension)
-        print("...Results will be written to ",result_call_file)
 
-        #df = pd.read_csv(args.call_file)
+        print("...Results will be written to ",result_call_file)
         call_data = json_data["call_data"]
         #print(type(call_data))
         #print(call_data)
 
         df_results = pd.DataFrame()
         for dict in call_data:
-
-            #print(dict["to"])
-            #print(dict["variables"]["last_name"])
-
             result_dict = {}
             result_dict["call_placed_at"] = dict["created_at"]
             result_dict["last_name"] = dict["variables"]["last_name"]
@@ -257,19 +253,13 @@ elif args.command == "update_batch_results":
             result_dict["answered_by"] = dict["answered_by"]
             result_dict["transferred_to"] = dict["transferred_to"]
 
-            #new_df = pd.DataFrame(result_dict)
-            #df_results = pd.concat(df_results, new_df)
-            #df_results = df_results.append(result_dict, ignore_index=True)
             df_results = pd.concat([df_results, pd.DataFrame([result_dict])], ignore_index=True)
-            #df_results.iloc[-1] = result_dict
             #print(result_dict)
 
         print("Updated status")
         print(df_results)
         df_results.to_csv(result_call_file, index=False)
-
-        #print("type 2", type(json_data))
-        #print(json_data)
+        exit(1)
     else:
         print("...Still Executing Batch")
 
