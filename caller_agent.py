@@ -69,7 +69,7 @@ if __debug__:
 
 
 ###########################
-# Initialize the CallAgent
+# Initialize Agent
 ###########################
 
 blandai_auth_key = os.environ[app_config.auth_key_env] 
